@@ -1,0 +1,7 @@
+# Optional tools for re-executing the notebook with stored outputs.
+# Not needed to run the dashboard, the CLI or the tests.
+-r requirements.txt
+ipykernel>=6.29
+nbclient>=0.10
+nbformat>=5.9
+kaleido>=1.0   # static PNG charts in the notebook (uses an installed Chrome/Chromium)

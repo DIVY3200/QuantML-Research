@@ -1,0 +1,4 @@
+segment,start,end,model_rows,backtest_days
+In-sample (training period),2010-03-16,2019-01-29,2233,2234
+Validation (used for model choices),2019-01-30,2022-01-10,743,744
+Out-of-sample (untouched test period),2022-01-11,2024-12-31,746,747

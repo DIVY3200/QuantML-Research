@@ -1,0 +1,94 @@
+# QuantML Research Platform - default experiment configuration.
+#
+# Units: returns are decimals (0.01 = 1%); costs are basis points (1 bp = 0.01% = 0.0001).
+# Every run records the full resolved configuration and package versions under reports/.
+
+seed: 42
+
+data:
+  source: yfinance            # yfinance | csv | synthetic
+  ticker: SPY                 # e.g. AAPL, MSFT, RELIANCE.NS, HDFCBANK.NS (provider coverage varies)
+  start: "2010-01-01"
+  end: "2024-12-31"           # inclusive
+  csv_path: null              # used when source == csv
+  cache_dir: data/raw         # downloaded data is cached here (relative to project root)
+  use_cache: true
+
+validation:
+  min_observations: 500       # minimum valid daily rows required to run an experiment
+  max_gap_calendar_days: 5    # warn when consecutive observations are further apart than this
+  ohlc_tolerance: 0.001       # relative tolerance for High/Low consistency checks
+  extreme_return_threshold: 0.25  # warn on |daily close-to-close return| above this (possible bad split data)
+
+features:
+  return_lags: 5              # ret_lag_0 .. ret_lag_4 (ret_lag_0 = return ending at the feature date)
+  momentum_windows: [5, 10, 20]
+  volatility_windows: [10, 20]
+  ma_distance_windows: [10, 20, 50]
+  ma_ratio_pairs: [[5, 20], [20, 50]]
+  range_window: 20
+  volume_window: 20
+  use_volume: auto            # auto | "true" | "false"
+
+target:
+  horizon: 1                  # trading periods ahead
+  basis: close                # close: C[t+h]/C[t]-1 | execution: return aligned with the execution convention
+  positive_threshold: 0.0     # label = 1 when the forward return is strictly greater than this
+
+split:
+  train: 0.6
+  validation: 0.2
+  test: 0.2
+  embargo: 0                  # extra observations dropped at each boundary in addition to the label purge
+
+model:
+  name: logistic_regression   # logistic_regression | random_forest (experimental)
+  tune_on_validation: true    # choose regularisation / depth on the validation set (log loss)
+  refit_on_train_and_validation: false
+  logistic_regression:
+    C: 1.0
+    C_grid: [0.001, 0.01, 0.1, 1.0, 10.0]
+    max_iter: 2000
+    class_weight: null
+  random_forest:
+    n_estimators: 300
+    max_depth: 4
+    max_depth_grid: [2, 4, 6]
+    min_samples_leaf: 50
+    max_features: sqrt
+    class_weight: null
+
+strategy:
+  ma_short: 20
+  ma_long: 50
+  ml_threshold: 0.5           # long when P(up) >= threshold
+  threshold_selection: fixed  # fixed | validation (grid search on validation net Sharpe, never on test)
+  threshold_grid: [0.48, 0.50, 0.52, 0.54, 0.56]
+  below_threshold_position: 0.0   # 0.0 = cash; a value in (0, 1) gives a partial "neutral" exposure
+
+backtest:
+  execution: next_open        # next_open: signal at close t, fill at open t+1 | next_close: fill at close t+1
+  fee_bps: 1.0                # commission/exchange fees per unit of turnover
+  slippage_bps: 2.0           # slippage per unit of turnover
+  initial_capital: 10000.0
+
+walk_forward:
+  enabled: true
+  initial_train_size: 756     # ~3 years of daily observations
+  test_size: 63               # ~1 quarter per out-of-sample window
+  window: expanding           # expanding | rolling
+  max_train_size: null        # required for rolling windows (defaults to initial_train_size)
+
+evaluation:
+  periods_per_year: 252       # annualisation convention for daily data
+  risk_free_rate: 0.0         # annual, converted geometrically to the daily frequency
+  min_obs_annualize: 60       # annualised metrics are reported as missing below this many observations
+  cost_grid_bps: [0, 1, 2, 5, 10, 20, 50]
+  bootstrap:
+    enabled: true
+    n_resamples: 1000
+    block_size: 20
+    confidence: 0.95
+
+output:
+  reports_dir: reports

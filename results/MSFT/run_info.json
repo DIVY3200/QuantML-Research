@@ -1,0 +1,57 @@
+{
+  "run_timestamp_utc": "2026-10-24T14:35:17.253109+00:00",
+  "environment": {
+    "python": "3.13.7",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "packages": {
+      "numpy": "2.5.4",
+      "pandas": "2.3.3",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "statsmodels": "0.15.0",
+      "yfinance": "1.7.0",
+      "plotly": "7.1.0",
+      "streamlit": "1.66.0",
+      "PyYAML": "6.0.3"
+    }
+  },
+  "data": {
+    "ticker": "MSFT",
+    "source": "Yahoo Finance via yfinance",
+    "is_synthetic": false,
+    "retrieved_at": "2026-10-24T14:33:43.867840+00:00",
+    "from_cache": true,
+    "price_adjustment": "Adjusted for splits and dividends: raw Open/High/Low/Close multiplied by Adj Close / Close (applied once).",
+    "validation_status": "PASSED",
+    "rows": 3774,
+    "start": "2010-01-04",
+    "end": "2024-12-31",
+    "notes": [
+      "Loaded from local cache MSFT_2010-01-01_2024-12-31_1d.csv; delete it to re-download."
+    ]
+  },
+  "n_features": 19,
+  "volume_features": true,
+  "label_lookahead_rows": 1,
+  "model": {
+    "name": "logistic_regression",
+    "params": {
+      "C": 0.001,
+      "max_iter": 2000,
+      "class_weight": null
+    }
+  },
+  "threshold": 0.5,
+  "checks": [
+    "Label purge: 1 row(s) removed before each split boundary; no training label uses prices from a later period.",
+    "Look-ahead audit PASSED: features recomputed on truncated history at 25 dates (max abs diff 0.00e+00).",
+    "Preprocessing (standardisation) is inside the model pipeline and fitted on training rows only."
+  ],
+  "warnings": [],
+  "lookahead_audit": {
+    "passed": true,
+    "n_checked": 25,
+    "max_abs_difference": 0.0,
+    "offending_dates": []
+  }
+}

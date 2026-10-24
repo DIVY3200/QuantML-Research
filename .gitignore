@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Environments
+.venv/
+venv/
+.env
+
+# Tooling
+.pytest_cache/
+.ipynb_checkpoints/
+.streamlit/secrets.toml
+
+# Data: downloaded/cached and derived files are not committed (provider licensing, size)
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Generated experiment outputs
+reports/*
+!reports/.gitkeep

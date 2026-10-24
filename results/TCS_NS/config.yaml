@@ -1,0 +1,110 @@
+seed: 42
+data:
+  source: yfinance
+  ticker: TCS.NS
+  start: '2010-01-01'
+  end: '2024-12-31'
+  csv_path: null
+  cache_dir: data/raw
+  use_cache: true
+validation:
+  min_observations: 500
+  max_gap_calendar_days: 5
+  ohlc_tolerance: 0.001
+  extreme_return_threshold: 0.25
+features:
+  return_lags: 5
+  momentum_windows:
+  - 5
+  - 10
+  - 20
+  volatility_windows:
+  - 10
+  - 20
+  ma_distance_windows:
+  - 10
+  - 20
+  - 50
+  ma_ratio_pairs:
+  - - 5
+    - 20
+  - - 20
+    - 50
+  range_window: 20
+  volume_window: 20
+  use_volume: auto
+target:
+  horizon: 1
+  basis: close
+  positive_threshold: 0.0
+split:
+  train: 0.6
+  validation: 0.2
+  test: 0.2
+  embargo: 0
+model:
+  name: logistic_regression
+  tune_on_validation: true
+  refit_on_train_and_validation: false
+  logistic_regression:
+    C: 1.0
+    C_grid:
+    - 0.001
+    - 0.01
+    - 0.1
+    - 1.0
+    - 10.0
+    max_iter: 2000
+    class_weight: null
+  random_forest:
+    n_estimators: 300
+    max_depth: 4
+    max_depth_grid:
+    - 2
+    - 4
+    - 6
+    min_samples_leaf: 50
+    max_features: sqrt
+    class_weight: null
+strategy:
+  ma_short: 20
+  ma_long: 50
+  ml_threshold: 0.5
+  threshold_selection: fixed
+  threshold_grid:
+  - 0.48
+  - 0.5
+  - 0.52
+  - 0.54
+  - 0.56
+  below_threshold_position: 0.0
+backtest:
+  execution: next_open
+  fee_bps: 1.0
+  slippage_bps: 2.0
+  initial_capital: 10000.0
+walk_forward:
+  enabled: true
+  initial_train_size: 756
+  test_size: 63
+  window: expanding
+  max_train_size: null
+evaluation:
+  periods_per_year: 252
+  risk_free_rate: 0.0
+  min_obs_annualize: 60
+  cost_grid_bps:
+  - 0
+  - 1
+  - 2
+  - 5
+  - 10
+  - 20
+  - 50
+  bootstrap:
+    enabled: true
+    n_resamples: 1000
+    block_size: 20
+    confidence: 0.95
+output:
+  reports_dir: reports

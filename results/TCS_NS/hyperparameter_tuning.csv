@@ -1,0 +1,6 @@
+params,validation_log_loss,validation_accuracy
+"{'C': 0.001, 'max_iter': 2000, 'class_weight': None}",0.691150119788843,0.5308641975308642
+"{'C': 0.01, 'max_iter': 2000, 'class_weight': None}",0.6916118819556043,0.522633744855967
+"{'C': 0.1, 'max_iter': 2000, 'class_weight': None}",0.6915977345662077,0.522633744855967
+"{'C': 1.0, 'max_iter': 2000, 'class_weight': None}",0.6914712682039299,0.5267489711934157
+"{'C': 10.0, 'max_iter': 2000, 'class_weight': None}",0.6914955127553134,0.5281207133058985
