@@ -450,16 +450,3 @@ need to reproduce a result exactly.
 - Probability calibration analysis and position sizing from predicted probabilities.
 - Additional model families evaluated under the same protocol (gradient boosting, regularised
   linear models with interaction terms).
-
----
-
-## Resume summary template
-
-Fill in the bracketed fields only with results produced by your own runs (see `reports/`):
-
-> Built a Python-based quantitative research platform comparing passive, technical-rule and
-> machine-learning strategies using chronological validation, transaction-cost-aware
-> backtesting and out-of-sample performance diagnostics. Implemented leakage controls (purged
-> splits, look-ahead audits, train-only preprocessing), walk-forward evaluation over
-> [N] folds and a Streamlit dashboard, with [N] automated tests. On [instrument, period], the ML
-> strategy achieved a net Sharpe of [x] versus [y] for buy-and-hold ([conclusion]).
